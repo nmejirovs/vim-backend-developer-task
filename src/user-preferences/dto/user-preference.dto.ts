@@ -1,5 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Preferences } from "./user-preference.entity";
+
+export class Preferences {
+    @ApiProperty()
+    email: boolean;
+    
+    @ApiProperty()
+    sms: boolean;
+}
 
 export class UserPreferenceDto {
     @ApiProperty({type: Number})

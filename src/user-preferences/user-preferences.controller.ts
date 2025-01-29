@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Put, Logger, Param, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { UpsertUserPreferenceDto, UserPreferenceDto } from './dto/user-preference.dto';
-import { UserPreferencesService } from './user-preferences.service';
+import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
 import { pick } from 'lodash'
 import { ApiOkResponse } from '@nestjs/swagger';
 

@@ -1,10 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class Preferences {
-    @ApiProperty()
     email: boolean;
-    
-    @ApiProperty()
     sms: boolean;
 }
 

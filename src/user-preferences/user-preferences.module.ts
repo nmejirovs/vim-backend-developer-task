@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserPreferencesController } from './user-preferences.controller';
-import { UserPreferencesService } from './user-preferences.service';
+import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
 
 @Module({
   controllers: [UserPreferencesController],
