@@ -1,9 +1,17 @@
 import { NestFactory } from '@nestjs/core';
+import { ConsoleLogger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,
+    {
+      logger: new ConsoleLogger({
+        json: true,
+        colors: true,
+      }),
+    }
+  );
   const config = new DocumentBuilder()
     .setTitle('vim-backend-developer-task')
     .setDescription('The vim-backend-developer-task API description')

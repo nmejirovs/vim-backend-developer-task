@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ServerStatus } from './types/server-status';
+import { ServerStatus } from './dto/server-status';
 
 @Injectable()
 export class AppService {
