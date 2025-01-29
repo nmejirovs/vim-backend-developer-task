@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Post, Put, Logger, Param, HttpStatus, ParseIntPipe } from '@nestjs/common';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { pick } from 'lodash'
 import { UpsertUserPreferenceDto, UserPreferenceDto } from './dto/user-preference.dto';
 import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
-import { pick } from 'lodash'
-import { ApiOkResponse } from '@nestjs/swagger';
+
+
 
 @Controller('user-preferences')
 export class UserPreferencesController {
@@ -17,9 +19,9 @@ export class UserPreferencesController {
             return (await this.userPreferencesService.getUsersPreferences()).map((entity)=>pick(entity, ['userId', 'email', 'telephone', 'preferences']));
         } catch (error) {
             // no need to add log on every level since error has stack trace
-            this.logger.error('Error on getting user prferences', error);
+            this.logger.error('Error on getting user preferences', error);
 
-            throw error;
+            throw new Error('Error on getting user preferences');
         }
         
     }
@@ -31,9 +33,9 @@ export class UserPreferencesController {
             return this.userPreferencesService.createUserPreference(userPreference);
         } catch (error) {
             // no need to add log on every level since error has stack trace
-            this.logger.error('Error on creating user prferences', error);
+            this.logger.error('Error on creating user preferences', error);
 
-            throw error;
+            throw new Error('Error on creating user preferences');
         }
     }
 
@@ -44,9 +46,9 @@ export class UserPreferencesController {
             return this.userPreferencesService.updateUserPreference(userId, userPreference);
         } catch (error) {
             // no need to add log on every level since error has stack trace
-            this.logger.error('Error on updating user prferences', error);
+            this.logger.error('Error on updating user preferences', error);
 
-            throw error;
+            throw new Error('Error on updating user preferences');
         }
     }
 

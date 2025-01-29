@@ -6,12 +6,12 @@ import { log } from 'console';
 @Injectable()
 export class UserPreferencesService {
 
-    private userPreferences: UserPreferenceEntity[] = [];
+    private static userPreferences: UserPreferenceEntity[] = [];
     private readonly logger = new Logger(UserPreferencesService.name);
 
     async getUsersPreferences():Promise<UserPreferenceEntity[]> {
         this.logger.verbose('Getting users preferences');
-        return this.userPreferences;
+        return UserPreferencesService.userPreferences;
     }
 
     async getUserPreferences(searchParams: {
@@ -19,7 +19,7 @@ export class UserPreferencesService {
         email?: string;
     }):Promise<UserPreferenceEntity> {
         this.logger.verbose('Getting users preferences');
-        return this.userPreferences.find((up) => { 
+        return UserPreferencesService.userPreferences.find((up) => { 
             return (!searchParams.userId || up.userId === searchParams.userId) && (!searchParams.email || up.email === searchParams.email);
          }) as UserPreferenceEntity;
     }
@@ -30,8 +30,8 @@ export class UserPreferencesService {
         preferences: Preferences;
     }): Promise<void> {
         this.logger.verbose(`Creating user preference ${JSON.stringify(userPreference)}`);
-        const maxId = maxBy(this.userPreferences, 'userId')?.userId || 0;
-        this.userPreferences.push({ ... userPreference, userId: maxId + 1 });
+        const maxId = maxBy(UserPreferencesService.userPreferences, 'userId')?.userId || 0;
+        UserPreferencesService.userPreferences.push({ ... userPreference, userId: maxId + 1 });
     }
 
     async updateUserPreference(userId: number, userPreference: {
@@ -40,7 +40,7 @@ export class UserPreferencesService {
         preferences: Preferences;
     }): Promise<void> {
         this.logger.verbose(`Updating user preference ${userId} with ${JSON.stringify(userPreference)}`);
-        this.userPreferences = this.userPreferences.map((up) => {
+        UserPreferencesService.userPreferences = UserPreferencesService.userPreferences.map((up) => {
             if (up.userId === userId) {
                 return {...up, ...userPreference};
             }

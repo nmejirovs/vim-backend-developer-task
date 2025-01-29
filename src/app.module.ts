@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { UserPreferencesModule } from './user-preferences/user-preferences.module';
 import { UserPreferencesService } from './services/user-preferences/user-preferences.service';
 import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationService } from './services/notification/notification.service';
 
 
 @Module({
@@ -21,7 +22,8 @@ import { NotificationsModule } from './notifications/notifications.module';
   controllers: [AppController],
   providers: [
     AppService,
-    UserPreferencesService
+    UserPreferencesService,
+    NotificationService
   ],
 })
 export class AppModule {}
