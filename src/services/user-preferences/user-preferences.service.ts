@@ -29,7 +29,7 @@ export class UserPreferencesService {
         preferences: Preferences;
     }): Promise<void> {
         this.logger.debug(`Creating user preference ${JSON.stringify(userPreference)}`);
-        if(UserPreferencesService.userPreferences.find((up) => up.email === userPreference.email || up.telephone === userPreference.telephone)) {
+        if(UserPreferencesService.userPreferences.find((up) => ( up.email && userPreference.email && up.email === userPreference.email ) || ( up.telephone && userPreference.telephone && up.telephone === userPreference.telephone ))) {
             throw new Error(`User with email ${userPreference.email} or telephone ${userPreference.telephone} already exists`);
         }
         const maxId = maxBy(UserPreferencesService.userPreferences, 'userId')?.userId || 0;

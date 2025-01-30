@@ -8,7 +8,7 @@ import { LocalhostGuard } from 'src/localhost/localhost.guard';
 
 
 
-@Controller('user-preferences')
+@Controller('user')
 export class UserPreferencesController {
     constructor(private readonly userPreferencesService: UserPreferencesService) {}
 
@@ -19,11 +19,19 @@ export class UserPreferencesController {
         if(!userPreference.email && !userPreference.telephone) {
             throw new Error('At least one of fields email or telephone must be provided');
         }
+
+        if(!userPreference.email && userPreference.preferences.email) {
+            throw new Error('Email must be provided if email preference is true');
+        }
+
+        if(!userPreference.telephone && userPreference.preferences.sms) {
+            throw new Error('Telephone must be provided if sms preference is true');
+        }
     }
 
     @Get()
-    @UseGuards(AuthGuard, LocalhostGuard) 
-    @ApiOkResponse({ type: UserPreferenceDto, isArray: true })
+    @UseGuards(LocalhostGuard) 
+    @ApiOkResponse({ type: UserPreferenceDto, isArray: true, description: 'Available only on localhost' })
     async getUsersPreferences(): Promise<UserPreferenceDto[]> {
         try {
             return (await this.userPreferencesService.getUsersPreferences()).map((entity)=>pick(entity, ['userId', 'email', 'telephone', 'preferences']));
