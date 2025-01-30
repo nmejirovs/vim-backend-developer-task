@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Logger, ValidationPipe, UseGuards, InternalServerErrorException } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Logger, ValidationPipe, UseGuards, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { pick } from 'lodash'
 import { InsertUserPreferenceDto, UpdateUserPreferenceDto, UserPreferenceDto } from './dto/user-preference.dto';
@@ -6,11 +6,12 @@ import { UserPreferencesService } from '../services/user-preferences/user-prefer
 import { AuthGuard } from 'src/auth/auth.guard';
 import { LocalhostGuard } from 'src/localhost/localhost.guard';
 import {validate} from 'class-validator';
-import DuplicateEntryError from 'src/errors/duplicate-entry-error';
+import DuplicateEntryError from '../errors/duplicate-entry-error';
+import UserNotFoundError from '../errors/user-not-found-error';
 
 
 
-@Controller('user')
+@Controller('user-preferences')
 export class UserPreferencesController {
     constructor(private readonly userPreferencesService: UserPreferencesService) {}
 
@@ -34,7 +35,7 @@ export class UserPreferencesController {
 
     @Post()
     @UseGuards(AuthGuard) 
-    @ApiOkResponse({description: 'Add user. At least one of fields email or telephone must be provided'})
+    @ApiOkResponse({description: 'Add user.'})
     async createUserPreference(@Body(new ValidationPipe()) userPreference: InsertUserPreferenceDto): Promise<void> {
  
         try {
@@ -53,13 +54,17 @@ export class UserPreferencesController {
 
     @Put()
     @UseGuards(AuthGuard) 
-    @ApiOkResponse({description: 'Update user details. At least one of fields email or telephone must be provided'})
-    async updateUserPreference(@Body() userPreference: UpdateUserPreferenceDto): Promise<void> {
+    @ApiOkResponse({description: 'Update user details.'})
+    async updateUserPreference(@Body(new ValidationPipe()) userPreference: UpdateUserPreferenceDto): Promise<void> {
         try {
-            return this.userPreferencesService.updateUserPreference(userPreference);
+            return await this.userPreferencesService.updateUserPreference(userPreference);
         } catch (error) {
             // no need to add log on every level since error has stack trace
             this.logger.error('Error on updating user preferences', error);
+
+            if(error instanceof UserNotFoundError) {
+                throw new NotFoundException("User not found");
+            }
 
             throw new Error('Error on updating user preferences');
         }

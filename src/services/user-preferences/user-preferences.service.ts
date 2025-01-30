@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { maxBy,  } from 'lodash';
 import { UserPreferenceEntity, Preferences } from '../../entities/user-preference.entity';
 import DuplicateEntryError from '../../errors/duplicate-entry-error';
+import UserNotFoundError from '../../errors/user-not-found-error';
 
 @Injectable()
 export class UserPreferencesService {
@@ -19,6 +20,9 @@ export class UserPreferencesService {
         email?: string;
     }):Promise<UserPreferenceEntity> {
         this.logger.debug('Getting users preferences');
+        if(!UserPreferencesService.userPreferences.find((up) => up.email === searchParams.email || up.userId === searchParams.userId)) {
+            throw new UserNotFoundError(`User with email ${searchParams.email} not found`);
+        }
         return UserPreferencesService.userPreferences.find((up) => { 
             return (!searchParams.userId || up.userId === searchParams.userId) && (!searchParams.email || up.email === searchParams.email);
          }) as UserPreferenceEntity;
@@ -42,9 +46,12 @@ export class UserPreferencesService {
         preferences: Preferences;
     }): Promise<void> {
         this.logger.debug(`Updating user preference ${userPreference.email} with ${JSON.stringify(userPreference)}`);
+        if(!UserPreferencesService.userPreferences.find((up) => up.email === userPreference.email)) {
+            throw new UserNotFoundError(`User with email ${userPreference.email} not found`);
+        }
         UserPreferencesService.userPreferences = UserPreferencesService.userPreferences.map((up) => {
             if (up.email === userPreference.email) {
-                return {...up, ...userPreference};
+                return {...up, preferences: {...userPreference.preferences}};
             }
             return up;
         });

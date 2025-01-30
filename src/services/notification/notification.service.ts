@@ -67,5 +67,7 @@ export class NotificationService {
                 throw new Error('Error on sending sms');
             }
         }
+
+        this.logger.debug(`Finished sending notification to ${notificationInput.userId} with message ${notificationInput.message}`);
     }
 }
