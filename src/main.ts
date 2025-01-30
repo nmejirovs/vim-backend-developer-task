@@ -19,7 +19,7 @@ async function bootstrap() {
   
   const config = new DocumentBuilder()
     .setTitle('vim-backend-developer-task')
-    .setDescription('The vim-backend-developer-task API description')
+    .setDescription('The "User Notifications Manager" service API description')
     .setVersion('1.0')
     .addBearerAuth(
       { 
@@ -36,7 +36,7 @@ async function bootstrap() {
     })
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('api/docs', app, documentFactory);
   await app.listen(currentConfiguration.port);
 }
 bootstrap();

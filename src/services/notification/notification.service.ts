@@ -29,7 +29,7 @@ export class NotificationService {
             return;
         }
 
-        if (userPreferences.preferences.email) {
+        if (userPreferences.preferences.email && userPreferences.email) {
             try {
                 this.logger.debug(`Sending email to ${userPreferences.email}`);
     
@@ -49,7 +49,7 @@ export class NotificationService {
 
         }
 
-        if (userPreferences.preferences.sms) {
+        if (userPreferences.preferences.sms && userPreferences.telephone) {
             try {
                 this.logger.debug(`Sending sms to ${userPreferences.telephone}`);
     

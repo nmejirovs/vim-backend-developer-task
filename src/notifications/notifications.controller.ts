@@ -12,7 +12,7 @@ export class NotificationsController {
 
     @Post()
     @UseGuards(AuthGuard) 
-    @ApiOkResponse({description: 'At least one of fields email or userId must be provided'})
+    @ApiOkResponse({description: 'Send notification. At least one of fields email or userId must be provided'})
     async sendNotification(@Body() sendNotificationRequest: SendNotificationRequestDto): Promise<void> {
         try {
             return await this.notificationService.sendNotification({

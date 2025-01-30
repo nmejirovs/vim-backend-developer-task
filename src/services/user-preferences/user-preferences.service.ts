@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { maxBy,  } from 'lodash';
 import { UserPreferenceEntity, Preferences } from '../../entities/user-preference.entity';
+import DuplicateEntryError from '../../errors/duplicate-entry-error';
 
 @Injectable()
 export class UserPreferencesService {
@@ -30,20 +31,19 @@ export class UserPreferencesService {
     }): Promise<void> {
         this.logger.debug(`Creating user preference ${JSON.stringify(userPreference)}`);
         if(UserPreferencesService.userPreferences.find((up) => ( up.email && userPreference.email && up.email === userPreference.email ) || ( up.telephone && userPreference.telephone && up.telephone === userPreference.telephone ))) {
-            throw new Error(`User with email ${userPreference.email} or telephone ${userPreference.telephone} already exists`);
+            throw new DuplicateEntryError(`User with email ${userPreference.email} or telephone ${userPreference.telephone} already exists`);
         }
         const maxId = maxBy(UserPreferencesService.userPreferences, 'userId')?.userId || 0;
         UserPreferencesService.userPreferences.push({ ... userPreference, userId: maxId + 1 });
     }
 
-    async updateUserPreference(userId: number, userPreference: {
+    async updateUserPreference(userPreference: {
         email: string;
-        telephone: string;
         preferences: Preferences;
     }): Promise<void> {
-        this.logger.debug(`Updating user preference ${userId} with ${JSON.stringify(userPreference)}`);
+        this.logger.debug(`Updating user preference ${userPreference.email} with ${JSON.stringify(userPreference)}`);
         UserPreferencesService.userPreferences = UserPreferencesService.userPreferences.map((up) => {
-            if (up.userId === userId) {
+            if (up.email === userPreference.email) {
                 return {...up, ...userPreference};
             }
             return up;

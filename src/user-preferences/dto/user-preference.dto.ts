@@ -1,34 +1,50 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, ApiSchema } from "@nestjs/swagger";
+import { IsNotEmpty } from 'class-validator';
 
 export class Preferences {
     @ApiProperty({required: true})
+    @IsNotEmpty()
     email: boolean;
     
     @ApiProperty({required: true})
+    @IsNotEmpty()
     sms: boolean;
 }
 
+@ApiSchema({description: 'User preferences response DTO'})
 export class UserPreferenceDto {
-    @ApiProperty({type: Number})
+    @ApiProperty({type: Number, description: 'Identifier of the user'})
     userId: number;
 
-    @ApiProperty()
+    @ApiProperty({description: 'Email of the user'})
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({description: 'Telephone of the user'})
     telephone: string;
 
-    @ApiProperty()
+    @ApiProperty({type: Preferences, description: 'User preferences'})
     preferences: Preferences;
 }
 
-export class UpsertUserPreferenceDto {
-    @ApiPropertyOptional({required: false})
+export class InsertUserPreferenceDto {
+    @ApiPropertyOptional({required: true})
+    @IsNotEmpty()
     email: string;
 
     @ApiPropertyOptional({required: false})
     telephone: string;
 
     @ApiProperty({required: true})
+    @IsNotEmpty()
+    preferences: Preferences;
+}
+
+export class UpdateUserPreferenceDto {
+    @ApiPropertyOptional({required: false})
+    @IsNotEmpty()
+    email: string;
+
+    @ApiProperty({required: true})
+    @IsNotEmpty()
     preferences: Preferences;
 }
