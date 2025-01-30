@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post, Put, Logger, Param, HttpStatus, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Logger, Param, HttpStatus, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { pick } from 'lodash'
 import { UpsertUserPreferenceDto, UserPreferenceDto } from './dto/user-preference.dto';
 import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { LocalhostGuard } from 'src/localhost/localhost.guard';
 
 
 
@@ -13,6 +15,7 @@ export class UserPreferencesController {
     private readonly logger = new Logger(UserPreferencesController.name);
 
     @Get()
+    @UseGuards(AuthGuard, LocalhostGuard) 
     @ApiOkResponse({ type: UserPreferenceDto, isArray: true })
     async getUsersPreferences(): Promise<UserPreferenceDto[]> {
         try {
@@ -27,6 +30,7 @@ export class UserPreferencesController {
     }
 
     @Post()
+    @UseGuards(AuthGuard) 
     @ApiOkResponse()
     async createUserPreference(@Body() userPreference: UpsertUserPreferenceDto): Promise<void> {
         try {
@@ -40,6 +44,7 @@ export class UserPreferencesController {
     }
 
     @Put(':userId')
+    @UseGuards(AuthGuard) 
     @ApiOkResponse()
     async updateUserPreference(@Body() userPreference: UpsertUserPreferenceDto, @Param('userId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) userId: number): Promise<void> {
         try {

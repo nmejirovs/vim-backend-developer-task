@@ -9,6 +9,7 @@ import { UserPreferencesService } from './services/user-preferences/user-prefere
 import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationService } from './services/notification/notification.service';
 import { AuthModule } from './auth/auth.module';
+import { LocalhostModule } from './localhost/localhost.module';
 
 
 @Module({
@@ -19,7 +20,8 @@ import { AuthModule } from './auth/auth.module';
     }),
     NotificationsModule,
     HttpModule,
-    AuthModule 
+    AuthModule,
+    LocalhostModule 
   ],
   controllers: [AppController],
   providers: [

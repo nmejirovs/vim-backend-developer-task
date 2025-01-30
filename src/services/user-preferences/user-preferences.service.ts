@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { maxBy, pick } from 'lodash';
+import { maxBy,  } from 'lodash';
 import { UserPreferenceEntity, Preferences } from '../../entities/user-preference.entity';
 import { log } from 'console';
 
@@ -30,6 +30,9 @@ export class UserPreferencesService {
         preferences: Preferences;
     }): Promise<void> {
         this.logger.verbose(`Creating user preference ${JSON.stringify(userPreference)}`);
+        if(UserPreferencesService.userPreferences.find((up) => up.email === userPreference.email)) {
+            throw new Error('User already exists');
+        }
         const maxId = maxBy(UserPreferencesService.userPreferences, 'userId')?.userId || 0;
         UserPreferencesService.userPreferences.push({ ... userPreference, userId: maxId + 1 });
     }
