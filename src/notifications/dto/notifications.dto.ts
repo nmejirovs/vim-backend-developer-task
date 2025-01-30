@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class SendNotificationRequestDto {
 
-    @ApiProperty({required: false}) 
+    @ApiPropertyOptional({required: false}) 
     userId?: number;
 
-    @ApiProperty({required: false})
+    @ApiPropertyOptional({required: false})
     email?: string;
     
-    @ApiProperty()
+    @ApiProperty({required: true})
     message: string;
 }

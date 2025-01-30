@@ -14,6 +14,13 @@ export class UserPreferencesController {
 
     private readonly logger = new Logger(UserPreferencesController.name);
 
+
+    validateUpsertFields (userPreference: UpsertUserPreferenceDto) {
+        if(!userPreference.email && !userPreference.telephone) {
+            throw new Error('At least one of fields email or telephone must be provided');
+        }
+    }
+
     @Get()
     @UseGuards(AuthGuard, LocalhostGuard) 
     @ApiOkResponse({ type: UserPreferenceDto, isArray: true })
@@ -31,9 +38,10 @@ export class UserPreferencesController {
 
     @Post()
     @UseGuards(AuthGuard) 
-    @ApiOkResponse()
+    @ApiOkResponse({description: 'At least one of fields email or telephone must be provided'})
     async createUserPreference(@Body() userPreference: UpsertUserPreferenceDto): Promise<void> {
         try {
+            this.validateUpsertFields(userPreference);
             return this.userPreferencesService.createUserPreference(userPreference);
         } catch (error) {
             // no need to add log on every level since error has stack trace
@@ -45,9 +53,10 @@ export class UserPreferencesController {
 
     @Put(':userId')
     @UseGuards(AuthGuard) 
-    @ApiOkResponse()
+    @ApiOkResponse({description: 'At least one of fields email or telephone must be provided'})
     async updateUserPreference(@Body() userPreference: UpsertUserPreferenceDto, @Param('userId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) userId: number): Promise<void> {
         try {
+            this.validateUpsertFields(userPreference);
             return this.userPreferencesService.updateUserPreference(userId, userPreference);
         } catch (error) {
             // no need to add log on every level since error has stack trace

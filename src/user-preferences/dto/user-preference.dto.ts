@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class Preferences {
-    @ApiProperty()
+    @ApiProperty({required: true})
     email: boolean;
     
-    @ApiProperty()
+    @ApiProperty({required: true})
     sms: boolean;
 }
 
@@ -23,12 +23,12 @@ export class UserPreferenceDto {
 }
 
 export class UpsertUserPreferenceDto {
-    @ApiProperty()
+    @ApiPropertyOptional({required: false})
     email: string;
 
-    @ApiProperty()
+    @ApiPropertyOptional({required: false})
     telephone: string;
 
-    @ApiProperty()
+    @ApiProperty({required: true})
     preferences: Preferences;
 }

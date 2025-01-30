@@ -1,10 +1,10 @@
 import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse,  } from '@nestjs/swagger';
 import { NotificationService } from '../services/notification/notification.service';
 import { SendNotificationRequestDto } from 'src/notifications/dto/notifications.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
-@Controller('notifications')
+@Controller('notification')
 export class NotificationsController {
     constructor(private readonly notificationService: NotificationService) {}
 
@@ -12,7 +12,7 @@ export class NotificationsController {
 
     @Post()
     @UseGuards(AuthGuard) 
-    @ApiOkResponse()
+    @ApiOkResponse({description: 'At least one of fields email or userId must be provided'})
     async sendNotification(@Body() sendNotificationRequest: SendNotificationRequestDto): Promise<void> {
         try {
             return await this.notificationService.sendNotification({
