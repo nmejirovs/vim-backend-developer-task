@@ -62,12 +62,13 @@ For request that requires authorization, "Authorization" header  with bearer tok
         -H "Authorization: Bearer onlyvim2024" \
         -H "Content-Type: application/json" \
         -d '{
-          "email": "test@gmail.com",
-          "telephone": "+972541234567",
-          "preferences": {
-            "email": true,
-            "sms": true
-        }'
+              "email": "test@gmail.com",
+              "telephone": "+972541234567",
+              "preferences": {
+                "email": true,
+                "sms": true
+              }
+            }'
       ```
 
 2. /user-preferences
@@ -86,15 +87,16 @@ For request that requires authorization, "Authorization" header  with bearer tok
       ```
    - Testing request:
       ```bash
-        curl -X POST http://localhost:8080/user-preferences \
+        curl -X PUT http://localhost:8080/user-preferences \
         -H "Authorization: Bearer onlyvim2024" \
         -H "Content-Type: application/json" \
         -d '{
-          "email": "test@gmail.com",
-          "preferences": {
-            "email": true,
-            "sms": true
-        }'
+              "email": "test@gmail.com",
+              "preferences": {
+                "email": true,
+                "sms": true
+            }
+          }'
       ```
 
 3. /notification
