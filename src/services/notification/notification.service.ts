@@ -16,6 +16,8 @@ export class NotificationService {
     ) {
         const notificationServerUrl = this.configService.get('notificationServerUrl');
 
+        this.logger.verbose(`Notification server url: ${notificationServerUrl}`);
+
         this.emailUrl = new URL('send-email', notificationServerUrl).toString();
         this.smsUrl = new URL('send-sms', notificationServerUrl).toString();
 

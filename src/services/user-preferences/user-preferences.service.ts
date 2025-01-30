@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { maxBy,  } from 'lodash';
 import { UserPreferenceEntity, Preferences } from '../../entities/user-preference.entity';
-import { log } from 'console';
 
 @Injectable()
 export class UserPreferencesService {

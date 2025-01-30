@@ -25,6 +25,18 @@
                 "PORT": "8080",
                 "NOTIFICATION_SERVER_URL": "http://localhost:5001/"
             }
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch NestJS Application",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}\\dist\\main.js",
+            "env": {
+              "PORT": "8080",
+                "NOTIFICATION_SERVER_URL": "http://localhost:5001/"
+            },
+            "args": ["--host", "::1"]
+          }
     ]
 }
