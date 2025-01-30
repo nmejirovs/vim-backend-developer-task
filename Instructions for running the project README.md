@@ -26,6 +26,7 @@ To run the service please use the command: docker-compose up -d notification-ser
 
 ### Running the project
 To install dependencies run the command: npm install
+
 To start the project run the command: npm start
 
 ## Api documentation
