@@ -1,17 +1,24 @@
 version: '3.8'
 
+networks:
+  vim-network:
+    driver: bridge
+
 services:
-  vim-assignment:
+  vim-home-assignment:
     build: 
       context: .
       dockerfile: Dockerfile
+    platform: linux/arm64/v8
     ports:
       - "8080:8080"
     environment:
       - PORT=8080
-      - NOTIFICATION_SERVER_URL=http://ISR-PF3RKYVY:5001
+      - NOTIFICATION_SERVER_URL=http://notification-service:5001
     depends_on:
       - notification-service
+    networks:
+      - vim-network
 
   notification-service:
     image: aryekog/backend-interview-notifications-service:0.0.2
@@ -23,3 +30,5 @@ services:
       - SMS_RATE_LIMIT=1
       - RATE_LIMIT_WINDOW_MS=1000
       - ERROR_RATE=0.1 
+    networks:
+      - vim-network
