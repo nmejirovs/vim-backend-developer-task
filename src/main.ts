@@ -12,7 +12,6 @@ async function bootstrap() {
       logger: new ConsoleLogger({
         json: true,
         colors: true,
-        timestamp: true,
         logLevels: currentConfiguration.logLevels
       }),
     }

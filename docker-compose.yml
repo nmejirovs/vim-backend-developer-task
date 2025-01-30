@@ -9,12 +9,12 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    platform: linux/arm64/v8
     ports:
       - "8080:8080"
     environment:
       - PORT=8080
       - NOTIFICATION_SERVER_URL=http://notification-service:5001
+      - LOG_LEVELS=["log", "fatal", "error", "warn", "debug", "verbose"]
     depends_on:
       - notification-service
     networks:
@@ -22,7 +22,7 @@ services:
 
   notification-service:
     image: aryekog/backend-interview-notifications-service:0.0.2
-    platform: linux/arm64/v8
+    #platform: linux/arm64/v8
     ports:
       - "5001:5001"
     environment:
