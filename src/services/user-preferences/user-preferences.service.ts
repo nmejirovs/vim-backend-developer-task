@@ -9,7 +9,7 @@ export class UserPreferencesService {
     private readonly logger = new Logger(UserPreferencesService.name);
 
     async getUsersPreferences():Promise<UserPreferenceEntity[]> {
-        this.logger.verbose('Getting users preferences');
+        this.logger.debug('Getting users preferences');
         return UserPreferencesService.userPreferences;
     }
 
@@ -17,7 +17,7 @@ export class UserPreferencesService {
         userId?: number;
         email?: string;
     }):Promise<UserPreferenceEntity> {
-        this.logger.verbose('Getting users preferences');
+        this.logger.debug('Getting users preferences');
         return UserPreferencesService.userPreferences.find((up) => { 
             return (!searchParams.userId || up.userId === searchParams.userId) && (!searchParams.email || up.email === searchParams.email);
          }) as UserPreferenceEntity;
@@ -28,9 +28,9 @@ export class UserPreferencesService {
         telephone: string;
         preferences: Preferences;
     }): Promise<void> {
-        this.logger.verbose(`Creating user preference ${JSON.stringify(userPreference)}`);
-        if(UserPreferencesService.userPreferences.find((up) => up.email === userPreference.email)) {
-            throw new Error('User already exists');
+        this.logger.debug(`Creating user preference ${JSON.stringify(userPreference)}`);
+        if(UserPreferencesService.userPreferences.find((up) => up.email === userPreference.email || up.telephone === userPreference.telephone)) {
+            throw new Error(`User with email ${userPreference.email} or telephone ${userPreference.telephone} already exists`);
         }
         const maxId = maxBy(UserPreferencesService.userPreferences, 'userId')?.userId || 0;
         UserPreferencesService.userPreferences.push({ ... userPreference, userId: maxId + 1 });
@@ -41,7 +41,7 @@ export class UserPreferencesService {
         telephone: string;
         preferences: Preferences;
     }): Promise<void> {
-        this.logger.verbose(`Updating user preference ${userId} with ${JSON.stringify(userPreference)}`);
+        this.logger.debug(`Updating user preference ${userId} with ${JSON.stringify(userPreference)}`);
         UserPreferencesService.userPreferences = UserPreferencesService.userPreferences.map((up) => {
             if (up.userId === userId) {
                 return {...up, ...userPreference};

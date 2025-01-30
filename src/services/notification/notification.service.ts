@@ -15,16 +15,13 @@ export class NotificationService {
         private configService: ConfigService
     ) {
         const notificationServerUrl = this.configService.get('notificationServerUrl');
-
-        this.logger.verbose(`Notification server url: ${notificationServerUrl}`);
-
         this.emailUrl = new URL('send-email', notificationServerUrl).toString();
         this.smsUrl = new URL('send-sms', notificationServerUrl).toString();
 
     }
 
     async sendNotification(notificationInput: { userId?: number, email?: string, message: string }): Promise<void> {
-        this.logger.verbose(`Sending notification to ${notificationInput.userId} with message ${notificationInput.message}`);
+        this.logger.debug(`Sending notification to ${notificationInput.userId} with message ${notificationInput.message}`);
 
         const userPreferences = await this.userPreferencesService.getUserPreferences({ userId: notificationInput.userId, email: notificationInput.email });
 
@@ -34,7 +31,7 @@ export class NotificationService {
 
         if (userPreferences.preferences.email) {
             try {
-                this.logger.verbose(`Sending email to ${userPreferences.email}`);
+                this.logger.debug(`Sending email to ${userPreferences.email}`);
     
                 const sendEmailBody = {
                     email: userPreferences.email,
@@ -42,6 +39,8 @@ export class NotificationService {
                 }
     
                 await this.httpService.axiosRef.post(`${this.emailUrl}`, sendEmailBody);
+
+                this.logger.debug(`Email sent to ${userPreferences.email} with message ${notificationInput.message}`);
             } catch (error) {
                 this.logger.error('Error on sending email', error);
 
@@ -52,7 +51,7 @@ export class NotificationService {
 
         if (userPreferences.preferences.sms) {
             try {
-                this.logger.verbose(`Sending sms to ${userPreferences.telephone}`);
+                this.logger.debug(`Sending sms to ${userPreferences.telephone}`);
     
                 const sendSmsBody = {
                     telephone: userPreferences.telephone,
@@ -60,6 +59,8 @@ export class NotificationService {
                 }
     
                 await this.httpService.axiosRef.post(`${this.smsUrl}`, sendSmsBody);
+
+                this.logger.debug(`SMS sent to ${userPreferences.telephone} with message ${notificationInput.message}`);
             } catch (error) {
                 this.logger.error('Error on sending sms', error);
 

@@ -12,7 +12,8 @@
             "cwd": "${workspaceFolder}",
             "env": {
                 "PORT": "8080",
-                "NOTIFICATION_SERVER_URL": "http://localhost:5001/"
+                "NOTIFICATION_SERVER_URL": "http://localhost:5001/",
+                "LOG_LEVELS": "[\"log\", \"fatal\", \"error\", \"warn\", \"debug\", \"verbose\"]"
             }
         },
         {
@@ -23,7 +24,8 @@
             "cwd": "${workspaceFolder}",
             "env": {
                 "PORT": "8080",
-                "NOTIFICATION_SERVER_URL": "http://localhost:5001/"
+                "NOTIFICATION_SERVER_URL": "http://localhost:5001/",
+                "LOG_LEVELS": "[\"log\", \"fatal\", \"error\", \"warn\", \"debug\", \"verbose\"]"
             }
         },
         {
@@ -34,7 +36,8 @@
             "program": "${workspaceFolder}\\dist\\main.js",
             "env": {
               "PORT": "8080",
-                "NOTIFICATION_SERVER_URL": "http://localhost:5001/"
+                "NOTIFICATION_SERVER_URL": "http://localhost:5001/",
+                "LOG_LEVELS": "[\"log\", \"fatal\", \"error\", \"warn\", \"debug\", \"verbose\"]"
             },
             "args": ["--host", "::1"]
           }
