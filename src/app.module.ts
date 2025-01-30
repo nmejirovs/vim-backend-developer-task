@@ -8,6 +8,7 @@ import { UserPreferencesModule } from './user-preferences/user-preferences.modul
 import { UserPreferencesService } from './services/user-preferences/user-preferences.service';
 import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationService } from './services/notification/notification.service';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -17,7 +18,8 @@ import { NotificationService } from './services/notification/notification.servic
       load: [configuration]
     }),
     NotificationsModule,
-    HttpModule 
+    HttpModule,
+    AuthModule 
   ],
   controllers: [AppController],
   providers: [
